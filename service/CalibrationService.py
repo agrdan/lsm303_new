@@ -2,7 +2,7 @@ from utilities.DBUtil import DBUtil
 from utilities.Calibration import Calibration
 from model.entity.Calibration import Calibration as EntityCalibration
 
-POINTS = 90
+POINTS = 30
 RANGE = 5
 
 class CalibrationService:
