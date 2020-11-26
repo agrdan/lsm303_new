@@ -8,8 +8,6 @@ class Status(Enum):
     ZATVOREN = 2
     KIPER = 3
 
-
-
 class WindowsStatus(db.Model):
     __tablename__ = 'windows_status'
 

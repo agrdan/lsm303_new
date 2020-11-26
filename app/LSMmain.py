@@ -1,12 +1,11 @@
+from datetime import datetime as dt
+from threading import Thread
+from time import sleep as delay
+
+from model.LSM303c import LSM303
 from model.dto.LSM303Dto import LSM303Dto
 from service import MqttClient
-from time import sleep as delay
-from threading import Thread
-import json
-from datetime import datetime as dt
 from service.CalibrationService import CalibrationService
-from utilities.SQLite import SQLite
-from model.LSM303c import LSM303
 
 
 class Main(Thread):
@@ -39,18 +38,13 @@ class Main(Thread):
     def run(self):
         self.mqtt.start()
         print("MQTT initialized!")
-        i = 1
-        validPoints = 0
-        calibrate = True
-        calibrationDone = False
-        #"""
         while True:
             msg = self.mqtt.getFromQueue()
             self.lsm.readMag()
             if msg != None:
                 topic, values = msg.split(";")
 
-                if topic == 'lsm/configuration':
+                if topic == MqttClient._topic:
                     val: int = 0
                     try:
                         val = int(values)

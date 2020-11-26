@@ -7,6 +7,7 @@ from model.dto.LSM303Dto import LSM303Dto
 import numpy as np
 from service.CalibrationService import CalibrationService
 import math
+from model.entity.WindowsStatus import Status
 
 
 class Registers:
@@ -45,6 +46,7 @@ class LSM303:
         self.default_setup()
         print("LSM303C I2C initialized")
         self.calibration = CalibrationService()
+
         self.otvoren = None
         self.zatvoren = None
         self.kip = None
@@ -81,14 +83,16 @@ class LSM303:
             self.oldZ = z
             print("{}, {}, {}".format(x, y, z))
             xCal, yCal, zCal = self.calibration.calibrateValues(int(x), int(y), int(z))
+
             self.checkReferentPoints(xCal, yCal, zCal)
             status = self.calculateStatus(xCal, yCal, zCal)
-            if status == 1:
+            if status == Status.OTVOREN.value:
                 print("Prozor je otvoren")
-            if status == 2:
+            if status == Status.ZATVOREN.value:
                 print("Prozor je zatvoren")
-            if status == 3:
+            if status == Status.KIPER.value:
                 print("Prozor je otvoren na kip")
+
             lsm = LSM303Dto()
             lsm.x = str(xCal)
             lsm.y = str(yCal)

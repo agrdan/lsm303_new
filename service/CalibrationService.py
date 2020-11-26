@@ -1,7 +1,7 @@
 from utilities.DBUtil import DBUtil
 from utilities.Calibration import Calibration
 from model.entity.Calibration import Calibration as EntityCalibration
-from model.entity.WindowsStatus import WindowsStatus
+from model.entity.WindowsStatus import WindowsStatus, Status
 from model.dto.WindowStatusDto import WindowStatusDto
 
 POINTS = 30
@@ -81,11 +81,11 @@ class CalibrationService:
         zatvoren = WindowStatusDto()
         kip = WindowStatusDto()
         for i in list:
-            if i.status == 1:
+            if i.status == Status.OTVOREN.value:
                 otvoren.fromEntity(i)
-            elif i.status == 2:
+            elif i.status == Status.ZATVOREN.value:
                 zatvoren.fromEntity(i)
-            elif i.status == 3:
+            elif i.status == Status.KIPER.value:
                 kip.fromEntity(i)
 
         return otvoren, zatvoren, kip
