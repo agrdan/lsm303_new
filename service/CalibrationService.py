@@ -2,6 +2,7 @@ from utilities.DBUtil import DBUtil
 from utilities.Calibration import Calibration
 from model.entity.Calibration import Calibration as EntityCalibration
 from model.entity.WindowsStatus import WindowsStatus
+from model.dto.WindowStatusDto import WindowStatusDto
 
 POINTS = 30
 RANGE = 5
@@ -73,3 +74,18 @@ class CalibrationService:
             DBUtil.insert(winStatus)
         else:
             DBUtil.updateWindowsStatus(WindowsStatus, winStatus)
+
+    def getAllWindowsStatuses(self):
+        list = DBUtil.findAll(WindowsStatus)
+        otvoren = WindowStatusDto()
+        zatvoren = WindowStatusDto()
+        kip = WindowStatusDto()
+        for i in list:
+            if i.status == 1:
+                otvoren.fromEntity(i)
+            elif i.status == 2:
+                zatvoren.fromEntity(i)
+            elif i.status == 3:
+                kip.fromEntity(i)
+
+        return otvoren, zatvoren, kip

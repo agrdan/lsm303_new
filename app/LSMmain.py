@@ -4,8 +4,6 @@ from time import sleep as delay
 from threading import Thread
 import json
 from datetime import datetime as dt
-
-
 from service.CalibrationService import CalibrationService
 from utilities.SQLite import SQLite
 from model.LSM303c import LSM303
@@ -118,3 +116,4 @@ class Main(Thread):
             self.counter.append(lineCnt)
             lineCnt += 1
         #print(self.x)
+

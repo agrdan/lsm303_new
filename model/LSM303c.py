@@ -6,6 +6,7 @@ import smbus
 from model.dto.LSM303Dto import LSM303Dto
 import numpy as np
 from service.CalibrationService import CalibrationService
+import math
 
 
 class Registers:
@@ -34,6 +35,7 @@ class LSM303:
         self.oldX = None
         self.oldY = None
         self.oldZ = None
+
         self.readingStatus = -1
         self.xStatus = []
         self.yStatus = []
@@ -43,6 +45,10 @@ class LSM303:
         self.default_setup()
         print("LSM303C I2C initialized")
         self.calibration = CalibrationService()
+        self.otvoren = None
+        self.zatvoren = None
+        self.kip = None
+        self.otvoren, self.zatvoren, self.kip = self.calibration.getAllWindowsStatuses()
 
 
     def default_setup(self):
@@ -76,7 +82,13 @@ class LSM303:
             print("{}, {}, {}".format(x, y, z))
             xCal, yCal, zCal = self.calibration.calibrateValues(int(x), int(y), int(z))
             self.checkReferentPoints(xCal, yCal, zCal)
-
+            status = self.calculateStatus(xCal, yCal, zCal)
+            if status == 1:
+                print("Prozor je otvoren")
+            if status == 2:
+                print("Prozor je zatvoren")
+            if status == 1:
+                print("Prozor je otvoren na kip")
             lsm = LSM303Dto()
             lsm.x = str(xCal)
             lsm.y = str(yCal)
@@ -155,4 +167,17 @@ class LSM303:
                 self.yStatus = []
                 self.zStatus = []
                 self.avg10 = 0
+
+    def calculateStatus(self, x, y, z):
+        currentVector = int(math.sqrt(math.pow((x + y + z), 2)))
+        zatvorenVector = abs(self.zatvoren.vector - currentVector)
+        otvorenVector = abs(self.otvoren.vector - currentVector)
+        kipVector = abs(self.kip.vector - currentVector)
+
+        if zatvorenVector < otvorenVector and zatvorenVector < kipVector:
+            return 2
+        if otvorenVector < zatvorenVector and otvorenVector < kipVector:
+            return 1
+        if kipVector < zatvorenVector and kipVector < otvorenVector:
+            return 3
 
