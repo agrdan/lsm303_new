@@ -27,9 +27,7 @@ class Calibration:
             rawX = int(float(x))
             rawY = int(float(y))
             rawZ = int(float(z))
-            print(self.x)
-            print(self.y)
-            print(self.z)
+
             if len(self.x) == 0:
                 self.x.append(rawX)
                 self.y.append(rawY)
@@ -72,6 +70,12 @@ class Calibration:
         self.offsetZ = (max(self.z) - min(self.z)) / 2
         self.offsetZ = (int(self.offsetZ) << 1) / 0xFF
         self.offsetAvg = (self.offsetX + self.offsetY + self.offsetZ) / 3
+        print("Offset:")
+        print(self.offsetX)
+        print(self.offsetY)
+        print(self.offsetZ)
+        print(self.offsetAvg)
+        print("_____________________________________________")
         return self.offsetX, self.offsetY, self.offsetZ
 
 
@@ -79,6 +83,10 @@ class Calibration:
         self.scaleX = self.offsetAvg / self.offsetX
         self.scaleY = self.offsetAvg / self.offsetY
         self.scaleZ = self.offsetAvg / self.offsetZ
+        print("Scales:")
+        print(self.scaleX)
+        print(self.scaleY)
+        print(self.scaleZ)
         return self.scaleX, self.scaleY, self.scaleZ
 
     def setOffset(self, x, y, z):
