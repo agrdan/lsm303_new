@@ -87,7 +87,7 @@ class LSM303:
                 print("Prozor je otvoren")
             if status == 2:
                 print("Prozor je zatvoren")
-            if status == 1:
+            if status == 3:
                 print("Prozor je otvoren na kip")
             lsm = LSM303Dto()
             lsm.x = str(xCal)
