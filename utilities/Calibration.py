@@ -27,6 +27,9 @@ class Calibration:
             rawX = int(float(x))
             rawY = int(float(y))
             rawZ = int(float(z))
+            print(self.x)
+            print(self.y)
+            print(self.z)
             if len(self.x) == 0:
                 self.x.append(rawX)
                 self.y.append(rawY)
