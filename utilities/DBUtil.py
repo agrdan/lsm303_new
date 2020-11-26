@@ -35,3 +35,27 @@ class DBUtil:
         except:
             db.session.rollback()
             return False
+
+    @staticmethod
+    def findByStatus(clazz, s):
+        entity = clazz.query.filter_by(status=s).one_or_none()
+        return entity
+
+
+    @staticmethod
+    def updateWindowsStatus(clazz, tempEntity):
+        entity = DBUtil.findByStatus(clazz, tempEntity.status)
+        if entity is not None:
+            try:
+                entity.x = tempEntity.x
+                entity.y = tempEntity.y
+                entity.z = tempEntity.z
+                entity.vector = tempEntity.vector
+                db.session.commit()
+                print("Windows status updated!")
+            except Exception as e:
+                db.session.rollback()
+                print("Query rollbacked!")
+                print(e)
+
+

@@ -1,6 +1,7 @@
 from utilities.DBUtil import DBUtil
 from utilities.Calibration import Calibration
 from model.entity.Calibration import Calibration as EntityCalibration
+from model.entity.WindowsStatus import WindowsStatus
 
 POINTS = 30
 RANGE = 5
@@ -63,3 +64,11 @@ class CalibrationService:
         except Exception as e:
             print(e)
             return None
+
+    def setWindowStatus(self, x, y, z, status):
+        winStatus = WindowsStatus.create(x, y, z, status)
+        entity = DBUtil.findByStatus(WindowsStatus, status)
+        if entity is None:
+            DBUtil.insert(entity)
+        else:
+            DBUtil.updateWindowsStatus(WindowsStatus, winStatus)

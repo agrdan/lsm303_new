@@ -34,6 +34,11 @@ class LSM303:
         self.oldX = None
         self.oldY = None
         self.oldZ = None
+        self.readingStatus = -1
+        self.xStatus = []
+        self.yStatus = []
+        self.zStatus = []
+        self.avg10 = 0
         self.bus = smbus.SMBus(1)
         self.default_setup()
         print("LSM303C I2C initialized")
@@ -63,24 +68,30 @@ class LSM303:
         x = (np.int16)(int(xh) << 8) | int(xl)
         y = (np.int16)(int(yh) << 8) | int(yl)
         z = (np.int16)(int(zh) << 8) | int(zl)
+
         if self.oldX != x or self.oldY != y or self.oldZ != z:
             self.oldX = x
             self.oldY = y
             self.oldZ = z
             print("{}, {}, {}".format(x, y, z))
-
             xCal, yCal, zCal = self.calibration.calibrateValues(int(x), int(y), int(z))
+            self.checkReferentPoints(xCal, yCal, zCal)
+
             lsm = LSM303Dto()
             lsm.x = str(xCal)
             lsm.y = str(yCal)
             lsm.z = str(zCal)
-
             return lsm.getJson()
         else:
             return None
 
     def startCalibration(self):
         self.calibration.startCalibration()
+
+
+    def setReadingStatus(self, status):
+        self.readingStatus = status
+
 
     def configuration1_25(self):
         self.bus.write_byte_data(Registers.LSM, Registers.CTRL_REG1, 0xC4)
@@ -99,6 +110,7 @@ class LSM303:
         else:
             return False
 
+
     def configuration80(self):
         self.bus.write_byte_data(Registers.LSM, Registers.CTRL_REG1, 0x2E)
         val = self.bus.read_byte_data(Registers.LSM, Registers.CTRL_REG1)
@@ -106,4 +118,38 @@ class LSM303:
             return True
         else:
             return False
+
+
+    def checkReferentPoints(self, xCal, yCal, zCal):
+        if self.readingStatus != -1:
+            print("Using window referent points")
+            if self.avg10 < 10:
+                self.xStatus.append(xCal)
+                self.yStatus.append(yCal)
+                self.zStatus.append(zCal)
+                self.avg10 += 1
+            else:
+                xAvg = 0
+                yAvg = 0
+                zAvg = 0
+                for i in self.xStatus:
+                    xAvg += i
+
+                for i in self.yStatus:
+                    yAvg += i
+
+                for i in self.zStatus:
+                    zAvg += i
+
+                xAvg /= self.avg10
+                yAvg /= self.avg10
+                zAvg /= self.avg10
+
+                self.calibration.setWindowStatus(xAvg, yAvg, zAvg, self.readingStatus)
+                print("Windows points saved for status {}".format(self.readingStatus))
+                self.readingStatus = -1
+                self.xStatus = []
+                self.yStatus = []
+                self.zStatus = []
+                self.avg10 = 0
 

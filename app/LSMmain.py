@@ -67,6 +67,12 @@ class Main(Thread):
                         self.lsm.configuration80()
                     if values == 'calibrate':
                         self.lsm.startCalibration()
+                    if values == 'otvoren':
+                        self.lsm.setReadingStatus(1)
+                    if values == 'zatvoren':
+                        self.lsm.setReadingStatus(2)
+                    if values == 'kip':
+                        self.lsm.setReadingStatus(3)
                 else:
                     timeNow = dt.now().strftime("%H:%M:%S %Y-%m-%d")
                     # print("{} | Message received on topic {}".format(timeNow, topic))
