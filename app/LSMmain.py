@@ -59,11 +59,17 @@ class Main(Thread):
                 yRaw = int(float(lsmDto.y))
                 zRaw = int(float(lsmDto.z))
                 if topic == 'lsm/configuration':
-                    if values == '125':
+                    val: int = 0
+                    try:
+                        val = int(values)
+                    except Exception as e:
+                        print(e)
+
+                    if val == 125:
                         self.lsm.configuration1_25()
-                    if values == '10':
+                    if val == 10:
                         self.lsm.configuration10()
-                    if values == '80':
+                    if val == 80:
                         self.lsm.configuration80()
                     if values == 'calibrate':
                         self.lsm.startCalibration()
