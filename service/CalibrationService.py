@@ -32,6 +32,8 @@ class CalibrationService:
                 ox, oy, oz = self.calibration.calculateOffset()
                 sx, sy, sz = self.calibration.calculateScale()
                 entity = EntityCalibration.create(ox, oy, oz, sx, sy, sz)
+                print("offsets: {}, {}, {}".format(entity.offset_x, entity.offset_y, entity.offset_z))
+                print("scales: {}, {}, {}".format(entity.scale_x, entity.scale_y, entity.scale_z))
                 self.insertToDB(entity)
                 self.calibrationStarted = False
                 print("Calibration done")
