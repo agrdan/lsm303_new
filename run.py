@@ -15,5 +15,5 @@ def initialize():
 
 if __name__ == '__main__':
     initialize()
-    app.run(debug=True, host='0.0.0.0', port=80)#, ssl_context=('cert.pem', 'key.pem'))#, ssl_context='adhoc')
+    app.run(debug=True, host='0.0.0.0', port=8080)
 

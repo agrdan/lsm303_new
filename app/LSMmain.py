@@ -51,13 +51,7 @@ class Main(Thread):
             self.lsm.readMag()
             if msg != None:
                 topic, values = msg.split(";")
-                timeNow = dt.now().strftime("%H:%M:%S %Y-%m-%d")
-                #print("{} | Message received on topic {}".format(timeNow, topic))
-                lsmDto = LSM303Dto().serialize(values, ignoreProperties=False)
-                #print("{} {} {}".format(lsmDto.x, lsmDto.y, lsmDto.z))
-                xRaw = int(float(lsmDto.x))
-                yRaw = int(float(lsmDto.y))
-                zRaw = int(float(lsmDto.z))
+
                 if topic == 'lsm/configuration':
                     val: int = 0
                     try:
@@ -73,7 +67,14 @@ class Main(Thread):
                         self.lsm.configuration80()
                     if values == 'calibrate':
                         self.lsm.startCalibration()
-
+                else:
+                    timeNow = dt.now().strftime("%H:%M:%S %Y-%m-%d")
+                    # print("{} | Message received on topic {}".format(timeNow, topic))
+                    lsmDto = LSM303Dto().serialize(values, ignoreProperties=False)
+                    # print("{} {} {}".format(lsmDto.x, lsmDto.y, lsmDto.z))
+                    xRaw = int(float(lsmDto.x))
+                    yRaw = int(float(lsmDto.y))
+                    zRaw = int(float(lsmDto.z))
             delay(0.5)
 
 
