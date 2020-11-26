@@ -26,7 +26,7 @@ class WindowsStatus(db.Model):
         wStatus.x = x
         wStatus.y = y
         wStatus.z = z
-        wStatus.vector = math.sqrt(math.pow((x + y + z), 2))
+        wStatus.vector = int(math.sqrt(math.pow((x + y + z), 2)))
         wStatus.status = s
         return wStatus
 

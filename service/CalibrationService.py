@@ -66,7 +66,7 @@ class CalibrationService:
             return None
 
     def setWindowStatus(self, x, y, z, status):
-        winStatus = WindowsStatus.create(x, y, z, status)
+        winStatus = WindowsStatus.create(int(float(x)), int(float(y)), int(float(z)), status)
         print(winStatus)
         entity = DBUtil.findByStatus(WindowsStatus, status)
         if entity is None:
