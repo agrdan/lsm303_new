@@ -9,13 +9,13 @@ class CalibrationService:
 
     def __init__(self):
         self.calibration = Calibration(POINTS, RANGE)
-        cal: Calibration = self.getCalibration()
+        cal: EntityCalibration = self.getCalibration()
         self.calibrationStarted = False
         self.calibrationDone = False
         if cal is not None:
             print("Calibracija ucitana")
-            self.calibration.setOffset(cal.offsetX, cal.offsetY, cal.offsetZ)
-            self.calibration.setScale(cal.scaleX, cal.scaleY, cal.scaleZ)
+            self.calibration.setOffset(cal.offset_x, cal.offset_y, cal.offset_z)
+            self.calibration.setScale(cal.scale_x, cal.scale_y, cal.scale_z)
         self.calibrationValid = self.calibration.checkCalibration()
 
 
