@@ -35,7 +35,7 @@ class CalibrationService:
                 self.insertToDB(entity)
                 self.calibrationStarted = False
                 print("Calibration done")
-
+            return x, y, z
         else:
             return self.calibration.calibrateValues(x, y, z)
 
