@@ -70,6 +70,6 @@ class CalibrationService:
         print(winStatus)
         entity = DBUtil.findByStatus(WindowsStatus, status)
         if entity is None:
-            DBUtil.insert(entity)
+            DBUtil.insert(winStatus)
         else:
             DBUtil.updateWindowsStatus(WindowsStatus, winStatus)
