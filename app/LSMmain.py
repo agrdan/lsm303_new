@@ -112,9 +112,3 @@ class Main(Thread):
             self.counter.append(lineCnt)
             lineCnt += 1
         #print(self.x)
-
-
-if __name__ == '__main__':
-    mqtt = MqttClient.Mqtt(MqttClient._topic)
-    main = Main(mqtt)
-    main.start()
