@@ -93,11 +93,13 @@ class Calibration:
         self.offsetX = x
         self.offsetY = y
         self.offsetZ = z
+        print("Offset set: {}, {}, {}".format(self.offsetX, self.offsetY, self.offsetZ))
 
     def setScale(self, x, y, z):
         self.scaleX = x
         self.scaleY = y
         self.scaleZ = z
+        print("Scale set: {}, {}, {}".format(self.scaleX, self.scaleY, self.scaleZ))
 
     def calibrateValues(self, x, y, z):
         valid = self.checkCalibration()
