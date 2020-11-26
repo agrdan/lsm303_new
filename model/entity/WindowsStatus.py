@@ -22,10 +22,14 @@ class WindowsStatus(db.Model):
 
     @staticmethod
     def create(x, y, z, s):
-        status = WindowsStatus()
-        status.x = x
-        status.y = y
-        status.z = z
-        status.vector = math.sqrt(math.pow((x + y + z), 2))
-        status.status = s
-        return status
+        wStatus = WindowsStatus()
+        wStatus.x = x
+        wStatus.y = y
+        wStatus.z = z
+        wStatus.vector = math.sqrt(math.pow((x + y + z), 2))
+        wStatus.status = s
+        return wStatus
+
+
+    def __repr__(self):
+        return str(self.__dict__)

@@ -144,6 +144,9 @@ class LSM303:
                 xAvg /= self.avg10
                 yAvg /= self.avg10
                 zAvg /= self.avg10
+                print(xAvg)
+                print(yAvg)
+                print(zAvg)
 
                 self.calibration.setWindowStatus(xAvg, yAvg, zAvg, self.readingStatus)
                 print("Windows points saved for status {}".format(self.readingStatus))
