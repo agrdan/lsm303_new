@@ -23,3 +23,4 @@ class Calibration(db.Model):
         calibration.scale_y = scaleY
         calibration.scale_z = scaleZ
         calibration.created = str(int(dt.now().timestamp()))
+        return calibration
