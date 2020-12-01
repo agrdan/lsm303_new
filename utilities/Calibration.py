@@ -59,7 +59,7 @@ class Calibration:
             return False, x, y, z
         else:
             self.calibrationDone = True
-            return True, self.x, self.y, self.z
+            return True, x, y, z
 
 
     def calculateOffset(self):

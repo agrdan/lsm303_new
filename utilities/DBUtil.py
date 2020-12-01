@@ -8,10 +8,12 @@ class DBUtil:
             db.session.add(model)
             db.session.commit()
             print("Query executed successfuly!")
+            return True
         except Exception as e:
             db.session.rollback()
             print("Query rollbacked!")
             print(e)
+        return False
 
 
     @staticmethod
@@ -53,9 +55,11 @@ class DBUtil:
                 entity.vector = tempEntity.vector
                 db.session.commit()
                 print("Windows status updated!")
+                return True
             except Exception as e:
                 db.session.rollback()
                 print("Query rollbacked!")
                 print(e)
+        return False
 
 
