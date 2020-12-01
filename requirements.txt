@@ -5,3 +5,4 @@ flask_sqlalchemy
 Flask-WTF
 Flask-Restful
 Flask-OAuthlib
+RPi.GPIO
