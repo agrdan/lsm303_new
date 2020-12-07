@@ -42,6 +42,7 @@ class Main(Thread):
             msg = self.mqtt.getFromQueue()
             self.lsm.readMag()
             if msg != None:
+                print("LSMmain_ {}".format(msg))
                 topic, values = msg.split(";")
 
                 if topic == MqttClient._topic:
