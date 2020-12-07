@@ -13,10 +13,8 @@ class AzureClient:
         asyncio.run(self.runAzureMessageSystem)
 
 
-
     async def publish(self, msg):
         await self.deviceClient.send_message(msg)
-
 
 
     def receiveMessage(self, message):

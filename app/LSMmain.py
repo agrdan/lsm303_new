@@ -7,6 +7,7 @@ from model.dto.LSM303Dto import LSM303Dto
 from service import MqttClient
 from service.CalibrationService import CalibrationService
 from service.client.AzureClient import AzureClient
+import asyncio
 
 
 class Main(Thread):
@@ -46,7 +47,7 @@ class Main(Thread):
             msg = self.mqtt.getFromQueue()
             jsonMsg = self.lsm.readMag()
             if jsonMsg is not None:
-                self.client.publish(jsonMsg)
+                asyncio.run(self.client.publish(jsonMsg))
             if msg != None:
                 print("LSMmain_ {}".format(msg))
                 topic, values = msg.split(";")
