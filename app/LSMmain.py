@@ -66,6 +66,8 @@ class Main(Thread):
                     if values == 'kip':
                         self.lsm.setReadingStatus(3)
                 else:
+                    pass
+                    """
                     timeNow = dt.now().strftime("%H:%M:%S %Y-%m-%d")
                     # print("{} | Message received on topic {}".format(timeNow, topic))
                     lsmDto = LSM303Dto().serialize(values, ignoreProperties=False)
@@ -73,6 +75,7 @@ class Main(Thread):
                     xRaw = int(float(lsmDto.x))
                     yRaw = int(float(lsmDto.y))
                     zRaw = int(float(lsmDto.z))
+                    """
             delay(0.5)
 
 
