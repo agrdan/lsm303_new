@@ -10,7 +10,7 @@ class AzureClient:
     def __init__(self, connectionString):
         self.connectionString = connectionString
 
-        asyncio.run(self.runAzureMessageSystem)
+        #asyncio.run(self.runAzureMessageSystem)
 
 
     async def publish(self, msg):
@@ -27,3 +27,13 @@ class AzureClient:
         self.deviceClient = IoTHubDeviceClient.create_from_connection_string(self.connectionString)
         await self.deviceClient.connect()
         self.deviceClient.on_message_received = self.receiveMessage
+
+
+
+    async def publishMessage(self, msg):
+        devClient = IoTHubDeviceClient.create_from_connection_string(self.connectionString)
+        await devClient.connect()
+        print("Trying to publish...")
+        await devClient.send_message(msg)
+        print("Message sent!")
+        await devClient.disconnect()

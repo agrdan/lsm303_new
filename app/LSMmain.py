@@ -47,7 +47,7 @@ class Main(Thread):
             msg = self.mqtt.getFromQueue()
             jsonMsg = self.lsm.readMag()
             if jsonMsg is not None:
-                asyncio.run(self.client.publish(jsonMsg))
+                asyncio.run(self.client.publishMessage(jsonMsg))
             if msg != None:
                 print("LSMmain_ {}".format(msg))
                 topic, values = msg.split(";")
