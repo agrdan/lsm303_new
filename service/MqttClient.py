@@ -6,7 +6,7 @@ from collections import deque
 
 _server = "iot-smart-systems.eu"
 _port = 1883
-_topic = "lsm/data"
+_topic = "lsm/configuration"
 
 
 class Mqtt(Thread):
