@@ -179,15 +179,18 @@ class LSM303:
 
     def calculateStatus(self, x, y, z):
         print("Status {}, {}, {}".format(x, y, z))
-        currentVector = int(math.sqrt(math.pow((x + y + z), 2)))
-        zatvorenVector = abs(self.zatvoren.vector - currentVector)
-        otvorenVector = abs(self.otvoren.vector - currentVector)
-        kipVector = abs(self.kip.vector - currentVector)
+        if self.zatvoren.vector == None or self.otvoren.vector == None or self.kip.vector == None:
+            pass
+        else:
+            currentVector = int(math.sqrt(math.pow((x + y + z), 2)))
+            zatvorenVector = abs(self.zatvoren.vector - currentVector)
+            otvorenVector = abs(self.otvoren.vector - currentVector)
+            kipVector = abs(self.kip.vector - currentVector)
 
-        if zatvorenVector < otvorenVector and zatvorenVector < kipVector:
-            return 2
-        if otvorenVector < zatvorenVector and otvorenVector < kipVector:
-            return 1
-        if kipVector < zatvorenVector and kipVector < otvorenVector:
-            return 3
+            if zatvorenVector < otvorenVector and zatvorenVector < kipVector:
+                return 2
+            if otvorenVector < zatvorenVector and otvorenVector < kipVector:
+                return 1
+            if kipVector < zatvorenVector and kipVector < otvorenVector:
+                return 3
 

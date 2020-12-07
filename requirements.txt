@@ -2,7 +2,5 @@ paho-mqtt
 adafruit-circuitpython-lsm303dlh_mag
 flask
 flask_sqlalchemy
-Flask-WTF
-Flask-Restful
-Flask-OAuthlib
 RPi.GPIO
+azure-iot-device
