@@ -36,6 +36,7 @@ class Mqtt(Thread):
     def on_message(self, mqttc, userdata, msg):
         msg_received = dt.datetime.now().strftime("%H:%M:%S %Y-%m-%d")
         mqttMsg = msg.topic + ";" + str(msg.payload.decode('utf-8'))
+        print(mqttMsg)
         self.queue.append(mqttMsg)
 
     def on_subscribe(self, mqttc, userdata, mid, granted_qos):
