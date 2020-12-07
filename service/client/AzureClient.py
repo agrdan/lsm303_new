@@ -9,7 +9,7 @@ class AzureClient:
 
     def __init__(self, connectionString):
         self.connectionString = connectionString
-        self.deviceClient = IoTHubDeviceClient.create_from_connection_string(connectionString)
+
         asyncio.run(self.runAzureMessageSystem)
 
 
@@ -24,5 +24,6 @@ class AzureClient:
 
 
     async def runAzureMessageSystem(self):
+        self.deviceClient = IoTHubDeviceClient.create_from_connection_string(self.connectionString)
         await self.deviceClient.connect()
         self.deviceClient.on_message_received = self.receiveMessage
