@@ -12,7 +12,7 @@ class AzureClient:
         self.connectionString = connectionString
         print(self.connectionString)
         #asyncio.run(self.publishMessage("test"))
-        asyncio.run(self.runAzureMessageSystem)
+        #asyncio.run(self.runAzureMessageSystem)
 
 
     async def publish(self, msg):
