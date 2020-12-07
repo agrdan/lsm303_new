@@ -1,7 +1,8 @@
 from time import sleep as delay
 import asyncio
-from azure.iot.device import IoTHubDeviceClient
+from azure.iot.device.aio import IoTHubDeviceClient
 from datetime import datetime as dt
+from threading import Thread
 
 
 
@@ -9,8 +10,9 @@ class AzureClient:
 
     def __init__(self, connectionString):
         self.connectionString = connectionString
-
-        #asyncio.run(self.runAzureMessageSystem)
+        print(self.connectionString)
+        #asyncio.run(self.publishMessage("test"))
+        asyncio.run(self.runAzureMessageSystem)
 
 
     async def publish(self, msg):
@@ -31,9 +33,15 @@ class AzureClient:
 
 
     async def publishMessage(self, msg):
-        devClient = IoTHubDeviceClient.create_from_connection_string(self.connectionString)
-        await devClient.connect()
+
+        device_client = IoTHubDeviceClient.create_from_connection_string(self.connectionString)
+        print(self.connectionString)
+
+        await device_client.connect()
         print("Trying to publish...")
-        await devClient.send_message(msg)
+        await device_client.send_message(msg)
         print("Message sent!")
-        await devClient.disconnect()
+        await device_client.disconnect()
+
+
+
