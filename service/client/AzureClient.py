@@ -36,12 +36,13 @@ class AzureClient:
 
         device_client = IoTHubDeviceClient.create_from_connection_string(self.connectionString)
         print(self.connectionString)
-
-        await device_client.connect()
+        if not device_client.connected:
+            await device_client.connect()
+            device_client.on_message_received = self.receiveMessage
         print("Trying to publish...")
         await device_client.send_message(msg)
         print("Message sent!")
-        await device_client.disconnect()
+        #await device_client.disconnect()
 
 
 
