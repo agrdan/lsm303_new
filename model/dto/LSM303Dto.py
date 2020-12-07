@@ -15,4 +15,4 @@ class LSM303Dto(JSONSerializator):
             'y': self.y,
             'z': self.z
         }
-        return json.dumps(lsm)
+        return str(lsm)

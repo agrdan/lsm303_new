@@ -6,11 +6,13 @@ from model.LSM303c import LSM303
 from model.dto.LSM303Dto import LSM303Dto
 from service import MqttClient
 from service.CalibrationService import CalibrationService
+from service.client.AzureClient import AzureClient
 
 
 class Main(Thread):
 
     validRange = 5
+    connStr = "HostName=AirAnalyzerSensors.azure-devices.net;DeviceId=LSM303c;SharedAccessKey=KWeXDVKTPRmoESeKAy3oa6xe4kXKiRhV8GgHDHD1jpQ="
 
     def __init__(self, mqtt: MqttClient):
         Thread.__init__(self)
@@ -34,13 +36,17 @@ class Main(Thread):
         self.scaleX = None
         self.scaleY = None
         self.scaleZ = None
+        self.client = None
 
     def run(self):
         self.mqtt.start()
+        self.client = AzureClient(self.connStr)
         print("MQTT initialized!")
         while True:
             msg = self.mqtt.getFromQueue()
-            self.lsm.readMag()
+            jsonMsg = self.lsm.readMag()
+            if jsonMsg is not None:
+                self.client.publish(jsonMsg)
             if msg != None:
                 print("LSMmain_ {}".format(msg))
                 topic, values = msg.split(";")
