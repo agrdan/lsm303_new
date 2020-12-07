@@ -64,11 +64,11 @@ class Calibration:
 
     def calculateOffset(self):
         self.offsetX = (max(self.x) - min(self.x)) / 2
-        self.offsetX = (int(self.offsetX) << 1) / 0xFF
+        self.offsetX = (int(self.offsetX) << 1) & 0xFF
         self.offsetY = (max(self.y) - min(self.y)) / 2
-        self.offsetY = (int(self.offsetY) << 1) / 0xFF
+        self.offsetY = (int(self.offsetY) << 1) & 0xFF
         self.offsetZ = (max(self.z) - min(self.z)) / 2
-        self.offsetZ = (int(self.offsetZ) << 1) / 0xFF
+        self.offsetZ = (int(self.offsetZ) << 1) & 0xFF
         self.offsetAvg = (self.offsetX + self.offsetY + self.offsetZ) / 3
         print("Offset:")
         print(self.offsetX)

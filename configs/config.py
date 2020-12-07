@@ -9,6 +9,6 @@ class ProdConfig(Config):
 
 
 class DevConfig(Config):
-    DEBUG = True
+    DEBUG = False
     SQLALCHEMY_DATABASE_URI = 'sqlite:///calibration.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
