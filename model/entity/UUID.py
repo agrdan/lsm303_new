@@ -14,6 +14,6 @@ class UUID(db.Model):
     def create(name):
         _uuid = UUID()
         _uuid.name = name
-        _uuid.uuid = uid.uuid4()
+        _uuid.uuid = str(uid.uuid4())
         _uuid.created = str(int(dt.now().timestamp()))
         return _uuid
