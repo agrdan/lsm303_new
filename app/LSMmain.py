@@ -44,7 +44,7 @@ class Main(Thread):
         self.client = AzureClient(self.connStr)
         print("MQTT initialized!")
         while True:
-            msg = self.azureService.getFromQueue()
+            msg = self.client.getFromQueue()
             jsonMsg = self.lsm.readMag()
             if jsonMsg is not None:
                 asyncio.run(self.client.publish(jsonMsg))
