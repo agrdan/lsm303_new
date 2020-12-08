@@ -46,12 +46,12 @@ class Main(Thread):
         while True:
             msg = self.client.getFromQueue()
             jsonMsg = self.lsm.readMag()
+
             if jsonMsg is not None:
                 asyncio.run(self.client.publish(jsonMsg))
-                #asyncio.run(self.client.publish(jsonMsg))
             if msg != None:
                 print("LSMmain_ {}".format(msg))
-                values = msg.split(";")
+                values = msg
                 val: int = 0
                 try:
                     val = int(values)

@@ -25,7 +25,6 @@ class AzureClient:
         if client.connected:
             await client.disconnect()
 
-
     async def publish(self, msg):
         if self.device.connected:
             print("Trying to publish message...\n{}".format(msg))
