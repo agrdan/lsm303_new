@@ -53,9 +53,9 @@ class Main(Thread):
             currentTime = dt.now()
             diff = None
             if self.lastTimeSend != 0:
-                dif = currentTime - self.lastTimeSend
+                diff = currentTime - self.lastTimeSend
 
-            if self.lastTimeSend == 0 or (diff != None and dif.seconds > TIME_DIFFERENCE):
+            if self.lastTimeSend == 0 or (diff != None and diff.seconds > TIME_DIFFERENCE):
                 if jsonMsg is not None:
                     asyncio.run(self.client.publish(jsonMsg))
                     self.lastTimeSend = currentTime
