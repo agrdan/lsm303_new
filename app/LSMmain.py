@@ -42,6 +42,7 @@ class Main(Thread):
     def run(self):
         self.mqtt.start()
         self.client = AzureClient(self.connStr)
+        asyncio.run(self.client.connect())
         print("MQTT initialized!")
         while True:
             msg = self.client.getFromQueue()
