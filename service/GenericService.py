@@ -8,4 +8,4 @@ class GenericService:
     @staticmethod
     def getUUID():
         uuid = DBUtil.findByName(UUID, NAME)
-        return uuid.name
+        return uuid.uuid

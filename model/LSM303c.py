@@ -102,7 +102,7 @@ class LSM303:
             lsm.y = str(yCal)
             lsm.z = str(zCal)
             lsm.status = status
-            lsm.uuid = self.uuid.uuid
+            lsm.uuid = self.uuid
             lsm.created = str(int(dt.now().timestamp()))
             return lsm.getJson()
         else:
