@@ -9,6 +9,7 @@ from service.CalibrationService import CalibrationService
 from service.client.AzureClient import AzureClient
 import asyncio
 
+TIME_DIFFERENCE = 60 # sekunde
 
 class Main(Thread):
 
@@ -39,6 +40,8 @@ class Main(Thread):
         self.scaleZ = None
         self.client = None
 
+        self.lastTimeSend = 0
+
     def run(self):
         self.mqtt.start()
         self.client = AzureClient(self.connStr)
@@ -47,9 +50,15 @@ class Main(Thread):
         while True:
             msg = self.client.getFromQueue()
             jsonMsg = self.lsm.readMag()
+            currentTime = dt.now()
+            diff = None
+            if self.lastTimeSend != 0:
+                dif = currentTime - self.lastTimeSend
 
-            if jsonMsg is not None:
-                asyncio.run(self.client.publish(jsonMsg))
+            if self.lastTimeSend == 0 or (diff != None and dif.seconds > TIME_DIFFERENCE):
+                if jsonMsg is not None:
+                    asyncio.run(self.client.publish(jsonMsg))
+                    self.lastTimeSend = currentTime
             if msg != None:
                 print("LSMmain_ {}".format(msg))
                 values = msg
