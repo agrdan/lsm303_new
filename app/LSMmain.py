@@ -8,6 +8,8 @@ from service import MqttClient
 from service.CalibrationService import CalibrationService
 from service.client.AzureClient import AzureClient
 import asyncio
+from service.BLEService import BLEService
+from collections import deque
 
 TIME_DIFFERENCE = 60 # sekunde
 
@@ -19,6 +21,8 @@ class Main(Thread):
     def __init__(self, mqtt: MqttClient):
         Thread.__init__(self)
         self.calibrationService = CalibrationService()
+        self.queue = deque()
+        self.ble = BLEService(self.queue)
         self.lsm = LSM303()
         self.mqtt = mqtt
         self.x = []
@@ -27,6 +31,7 @@ class Main(Thread):
         self.time = []
         self.counter = []
 
+        self.ble.start()
         self.xArr = []
         self.yArr = []
         self.zArr = []
@@ -48,7 +53,14 @@ class Main(Thread):
         asyncio.run(self.client.connect())
         print("MQTT initialized!")
         while True:
-            msg = self.client.getFromQueue()
+            if len(self.queue) is not 0:
+                print("_____________________________________________")
+                blmsg = self.queue.popleft()
+                for dev in blmsg:
+                    print("{}".format(dev.getJson()))
+            msg = self.client.getFromQueue() # for azure
+            #print("_____________________________________________")
+            #msg = self.mqtt.getFromQueue()
             jsonMsg = self.lsm.readMag()
             currentTime = dt.now()
             diff = None
@@ -61,8 +73,9 @@ class Main(Thread):
                     self.lastTimeSend = currentTime
             if msg != None:
                 print("LSMmain_ {}".format(msg))
-                values = msg
+                #values = msg # azure
                 val: int = 0
+                topic, values = msg.split(";")
                 try:
                     val = int(values)
                 except Exception as e:
