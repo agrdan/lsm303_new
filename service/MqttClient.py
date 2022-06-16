@@ -4,9 +4,9 @@ from time import sleep as delay
 import datetime as dt
 from collections import deque
 
-_server = "iot-smart-systems.eu"
+_server = "edu-agrdan.plusvps.com"
 _port = 1883
-_topic = "lsm/configuration"
+_topic = "iot/window"
 
 
 class Mqtt(Thread):
@@ -24,11 +24,10 @@ class Mqtt(Thread):
         self.mqttc.on_unsubscribe = self.on_unsubscribe
         self.mqttc.connect(host=_server, port=_port)
         self.mqttc.loop_forever()
-        delay(0.3)
 
     def on_connect(self, mqttc, userdata, flags, rc):
         print('Connected... -> rc = ' + str(rc))
-        mqttc.subscribe(topic="lsm/configuration", qos=0)
+        mqttc.subscribe(topic="iot/configuration", qos=0)
 
     def on_disconnect(self, mqttc, userdata, rc):
         print('Disconnected... -> rc = ' + str(rc))

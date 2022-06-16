@@ -1,12 +1,10 @@
 from datetime import datetime as dt
 from threading import Thread
 from time import sleep as delay
-
 from model.LSM303c import LSM303
 from model.dto.LSM303Dto import LSM303Dto
-from service import MqttClient
+from service.MqttClient import Mqtt
 from service.CalibrationService import CalibrationService
-from service.client.AzureClient import AzureClient
 import asyncio
 from service.BLEService import BLEService
 from collections import deque
@@ -16,9 +14,9 @@ TIME_DIFFERENCE = 60 # sekunde
 class Main(Thread):
 
     validRange = 5
-    connStr = "HostName=AirAnalyzerSensors.azure-devices.net;DeviceId=LSM303c;SharedAccessKey=KWeXDVKTPRmoESeKAy3oa6xe4kXKiRhV8GgHDHD1jpQ="
+    #connStr = "HostName=AirAnalyzerSensors.azure-devices.net;DeviceId=LSM303c;SharedAccessKey=KWeXDVKTPRmoESeKAy3oa6xe4kXKiRhV8GgHDHD1jpQ="
 
-    def __init__(self, mqtt: MqttClient):
+    def __init__(self, mqtt: Mqtt):
         Thread.__init__(self)
         self.calibrationService = CalibrationService()
         self.queue = deque()
@@ -49,8 +47,6 @@ class Main(Thread):
 
     def run(self):
         self.mqtt.start()
-        self.client = AzureClient(self.connStr)
-        asyncio.run(self.client.connect())
         print("MQTT initialized!")
         while True:
             if len(self.queue) is not 0:
@@ -58,9 +54,9 @@ class Main(Thread):
                 blmsg = self.queue.popleft()
                 for dev in blmsg:
                     print("{}".format(dev.getJson()))
-            msg = self.client.getFromQueue() # for azure
+            #msg = self.client.getFromQueue() # for azure
             #print("_____________________________________________")
-            #msg = self.mqtt.getFromQueue()
+            msg = self.mqtt.getFromQueue()
             jsonMsg = self.lsm.readMag()
             currentTime = dt.now()
             diff = None
@@ -69,23 +65,19 @@ class Main(Thread):
 
             if self.lastTimeSend == 0 or (diff != None and diff.seconds > TIME_DIFFERENCE):
                 if jsonMsg is not None:
-                    asyncio.run(self.client.publish(jsonMsg))
+                    self.mqtt.publish(jsonMsg)
                     self.lastTimeSend = currentTime
             if msg != None:
                 print("LSMmain_ {}".format(msg))
                 #values = msg # azure
                 val: int = 0
                 topic, values = msg.split(";")
-                try:
-                    val = int(values)
-                except Exception as e:
-                    print(e)
 
-                if val == 125:
+                if val == "125":
                     self.lsm.configuration1_25()
-                if val == 10:
+                if val == "10":
                     self.lsm.configuration10()
-                if val == 80:
+                if val == "80":
                     self.lsm.configuration80()
                 if values == 'calibrate':
                     self.lsm.startCalibration()
